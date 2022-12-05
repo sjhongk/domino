@@ -1,0 +1,21 @@
+spring:
+  profiles:
+    active: local
+logging:
+  config: logback-spring.xml
+
+---
+server:
+  port: 10012
+
+spring:
+  config:
+    activate:
+      on-profile: local
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+api:
+  endpoint:
+    stock: https://query1.finance.yahoo.com/v8/finance/chart

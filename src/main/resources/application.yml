@@ -6,7 +6,7 @@ logging:
 
 ---
 server:
-  port: 10012
+  port: 8080
 
 spring:
   config:
@@ -18,4 +18,4 @@ spring:
 
 api:
   endpoint:
-    stock: https://query1.finance.yahoo.com/v8/finance/chart
+    yahoo-finance: https://query1.finance.yahoo.com/v8/finance/chart

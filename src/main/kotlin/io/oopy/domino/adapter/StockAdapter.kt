@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import io.oopy.domino.config.ApiConfig
 import io.oopy.domino.config.EndPoint
 import io.oopy.domino.domain.stock.Chart
+import io.oopy.domino.domain.stock.Interval
+import io.oopy.domino.domain.stock.Range
 import io.oopy.domino.domain.stock.StockSymbol
 import mu.KotlinLogging
 import okhttp3.*
@@ -16,7 +18,7 @@ class StockAdapter(
     private val objectMapper: ObjectMapper,
     private val okHttpClient: OkHttpClient
 ) {
-    private val endpoint = apiConfig.endpoint.getValue(EndPoint.STOCK.value)
+    private val endpoint = apiConfig.endpoint.getValue(EndPoint.YAHOO_FINANCE.value)
 
     private fun convertToMap(request: StockRequest): Map<String, String> {
         val entries = mutableMapOf<String, String>()
@@ -49,6 +51,7 @@ class StockAdapter(
         val responseBody: String? = httpResponse.body?.string()
         if (!httpResponse.isSuccessful) {
             logger.error { "status code: $statusCode, error occurred" }
+            throw Exception("failed to call yahoo finance chart API")
         }
 
         return objectMapper.readValue(responseBody, StockResponse::class.java)
@@ -56,8 +59,8 @@ class StockAdapter(
 
     data class StockRequest(
         var symbol: String = StockSymbol.SAMSUNG.code,
-        var interval: String = "1d",
-        var range: String = "5d"
+        var interval: String = Interval.DAY.value,
+        var range: String = Range.FIVE_DAYS.value
     )
 
     data class StockResponse(

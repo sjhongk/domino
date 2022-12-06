@@ -3,9 +3,10 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("org.springframework.boot") version "2.7.6"
     id("io.spring.dependency-management") version "1.1.0"
-    id("com.google.cloud.tools.jib") version "3.0.0"
+    id("com.google.cloud.tools.jib") version "3.3.1"
     kotlin("jvm") version "1.7.21"
     kotlin("plugin.spring") version "1.7.21"
+    id("java")
     id("war")
 }
 
@@ -53,3 +54,13 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+jib {
+    container {
+        jvmFlags = listOf("-Xms512m", "-Xdebug")
+        mainClass = "io.oopy.domino.DominoApplicationKt"
+        ports = listOf("8080/tcp")
+    }
+}
+
+jib.to.image = project.name

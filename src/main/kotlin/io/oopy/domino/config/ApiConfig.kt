@@ -10,5 +10,5 @@ data class ApiConfig (
 )
 
 enum class EndPoint(val value : String) {
-    STOCK("stock")
+    YAHOO_FINANCE("yahoo-finance")
 }
